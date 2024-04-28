@@ -1,0 +1,37 @@
+{
+  "name": "jobify-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && npx prisma generate && node ./dist/index.js",
+    "dev": "concurrently \"tsc -w\" \"nodemon ./dist/index.js\"",
+    "build": "tsc",
+    "prisma:generate": "npx prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.12.7",
+    "@types/uuid": "^9.0.8",
+    "bcrypt": "^5.1.1",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.0",
+    "prisma": "^5.13.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5",
+    "uuid": "^9.0.1",
+    "uuid-validate": "^0.0.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
+  }
+}
