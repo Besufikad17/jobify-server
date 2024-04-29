@@ -1,0 +1,148 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum EducationLevel {
+  HIGHSCHOOL
+  BSC
+  MSC
+  PHD
+}
+
+enum OrganizationType {
+  PRIVATE
+  GOVERNMENTAL
+}
+
+enum PostStatus {
+  PENDING
+  CANCELLED
+  CLOSED
+}
+
+model Employees {
+  id                String          @id @db.VarChar(36)
+  first_name        String
+  last_name         String
+  age               Int
+  email             String          @unique
+  phone_number      String          @unique
+  telegram_username String          @unique
+  telegram_id       BigInt
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @updatedAt()
+  deleted_at        DateTime?
+  Profiles          Profiles[]
+  Subscriptions     Subscriptions[]
+}
+
+model Profiles {
+  id                      String         @id @db.VarChar(36)
+  employee_id             String         @db.VarChar(36)
+  highest_education_level EducationLevel
+  portfolio               String?
+  tempo                   String?
+  github                  String?
+  linkedin                String?
+  rating                  Int?
+  created_at              DateTime       @default(now())
+  updated_at              DateTime       @updatedAt()
+  deleted_at              DateTime?
+  Employee                Employees      @relation(fields: [employee_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model Address {
+  id              String        @id @db.VarChar(36)
+  organization_id String        @db.VarChar(36)
+  city            String
+  subcity         String?
+  kebele          String?
+  house_number    String?
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt()
+  deleted_at      DateTime?
+  Organization    Organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Admins {
+  id           String    @id @db.VarChar(36)
+  first_name   String
+  last_name    String
+  email        String    @unique
+  phone_number String    @unique
+  password     String
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt()
+  deleted_at   DateTime?
+}
+
+model Organizations {
+  id                String           @id @db.VarChar(36)
+  name              String
+  type              OrganizationType
+  description       String           @db.MediumText
+  email             String           @unique
+  phone_number      String           @unique
+  linkedin          String
+  telegram_username String
+  telegram_id       BigInt
+  created_at        DateTime         @default(now())
+  updated_at        DateTime         @updatedAt()
+  deleted_at        DateTime?
+  Posts             Posts[]
+  Address           Address[]
+}
+
+model Posts {
+  id              String         @id @db.VarChar(36)
+  organization_id String         @db.VarChar(36)
+  title           String
+  salary          String
+  quantity        Int
+  description     String         @db.MediumText
+  deadline        DateTime
+  location        String
+  requirements    String         @db.MediumText
+  status          PostStatus     @default(PENDING)
+  created_at      DateTime       @default(now())
+  updated_at      DateTime       @updatedAt()
+  deleted_at      DateTime?
+  Organization    Organizations  @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  PostPayments    PostPayments[]
+}
+
+model Subscriptions {
+  id                   String                 @id @db.VarChar(36)
+  employee_id          String                 @db.VarChar(36)
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt()
+  deleted_at           DateTime?
+  Employee             Employees              @relation(fields: [employee_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  SubscriptionPayments SubscriptionPayments[]
+}
+
+model SubscriptionPayments {
+  id              String        @id @db.VarChar(36)
+  subscription_id String        @db.VarChar(36)
+  amount          Float
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt()
+  deleted_at      DateTime?
+  Subscription    Subscriptions @relation(fields: [subscription_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model PostPayments {
+  id         String    @id @db.VarChar(36)
+  post_id    String    @db.VarChar(36)
+  amount     Float
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt()
+  deleted_at DateTime?
+  Post       Posts     @relation(fields: [post_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
