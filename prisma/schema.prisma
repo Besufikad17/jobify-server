@@ -26,60 +26,66 @@ enum PostStatus {
   CLOSED
 }
 
+enum SubscriptionStatus {
+  PENDING
+  COMPLETED
+}
+
 model Employees {
   id                String          @id @db.VarChar(36)
-  first_name        String
-  last_name         String
-  age               Int
+  first_name        String          @map("firstName")
+  last_name         String          @map("lastName")
+  date_of_birth     DateTime        @map("dateOfBirth")
   email             String          @unique
-  phone_number      String          @unique
-  telegram_username String          @unique
-  telegram_id       BigInt
-  created_at        DateTime        @default(now())
-  updated_at        DateTime        @updatedAt()
-  deleted_at        DateTime?
+  phone_number      String          @unique @map("phoneNumber")
+  telegram_username String          @unique @map("telegramUsername")
+  telegram_id       String          @map("telegramId")
+  created_at        DateTime        @default(now()) @map("createdAt")
+  updated_at        DateTime        @updatedAt() @map("updatedAt")
+  deleted_at        DateTime?       @map("deletedAt")
   Profiles          Profiles[]
   Subscriptions     Subscriptions[]
+  Applications      Applications[]
 }
 
 model Profiles {
   id                      String         @id @db.VarChar(36)
-  employee_id             String         @db.VarChar(36)
-  highest_education_level EducationLevel
+  employee_id             String         @map("employeeId") @db.VarChar(36)
+  highest_education_level EducationLevel @map("highestEducationLevel")
   portfolio               String?
-  tempo                   String?
+  cv                      String?
   github                  String?
   linkedin                String?
   rating                  Int?
-  created_at              DateTime       @default(now())
-  updated_at              DateTime       @updatedAt()
-  deleted_at              DateTime?
+  created_at              DateTime       @default(now()) @map("createdAt")
+  updated_at              DateTime       @updatedAt() @map("updatedAt")
+  deleted_at              DateTime?      @map("deletedAt")
   Employee                Employees      @relation(fields: [employee_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Address {
   id              String        @id @db.VarChar(36)
-  organization_id String        @db.VarChar(36)
+  organization_id String        @map("organizationId") @db.VarChar(36)
   city            String
   subcity         String?
   kebele          String?
-  house_number    String?
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt()
-  deleted_at      DateTime?
+  house_number    String?       @map("houseNumber")
+  created_at      DateTime      @default(now()) @map("createdAt")
+  updated_at      DateTime      @updatedAt() @map("updatedAt")
+  deleted_at      DateTime?     @map("deletedAt")
   Organization    Organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Admins {
   id           String    @id @db.VarChar(36)
-  first_name   String
-  last_name    String
+  first_name   String    @map("firstName")
+  last_name    String    @map("lastName")
   email        String    @unique
-  phone_number String    @unique
+  phone_number String    @unique @map("phoneNumber")
   password     String
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt()
-  deleted_at   DateTime?
+  created_at   DateTime  @default(now()) @map("createdAt")
+  updated_at   DateTime  @updatedAt() @map("updatedAt")
+  deleted_at   DateTime? @map("deletedAt")
 }
 
 model Organizations {
@@ -88,20 +94,20 @@ model Organizations {
   type              OrganizationType
   description       String           @db.MediumText
   email             String           @unique
-  phone_number      String           @unique
+  phone_number      String           @unique @map("phoneNumber")
   linkedin          String
-  telegram_username String
-  telegram_id       BigInt
-  created_at        DateTime         @default(now())
-  updated_at        DateTime         @updatedAt()
-  deleted_at        DateTime?
+  telegram_username String           @map("telegramUsername")
+  telegram_id       BigInt           @map("telegramId")
+  created_at        DateTime         @default(now()) @map("createdAt")
+  updated_at        DateTime         @updatedAt() @map("updatedAt")
+  deleted_at        DateTime?        @map("deletedAt")
   Posts             Posts[]
   Address           Address[]
 }
 
 model Posts {
   id              String         @id @db.VarChar(36)
-  organization_id String         @db.VarChar(36)
+  organization_id String         @map("organizationId") @db.VarChar(36)
   title           String
   salary          String
   quantity        Int
@@ -110,39 +116,53 @@ model Posts {
   location        String
   requirements    String         @db.MediumText
   status          PostStatus     @default(PENDING)
-  created_at      DateTime       @default(now())
-  updated_at      DateTime       @updatedAt()
-  deleted_at      DateTime?
+  created_at      DateTime       @default(now()) @map("createdAt")
+  updated_at      DateTime       @updatedAt() @map("updatedAt")
+  deleted_at      DateTime?      @map("deletedAt")
   Organization    Organizations  @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   PostPayments    PostPayments[]
+  Applications    Applications[]
+}
+
+model Applications {
+  id          String    @id @db.VarChar(36)
+  employee_id String    @map("employeeId") @db.VarChar(36)
+  post_id     String    @map("postId") @db.VarChar(36)
+  note        String    @db.MediumText
+  created_at  DateTime  @default(now()) @map("createdAt")
+  updated_at  DateTime  @updatedAt() @map("updatedAt")
+  deleted_at  DateTime? @map("deletedAt")
+  Employee    Employees @relation(fields: [employee_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Post        Posts     @relation(fields: [post_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Subscriptions {
   id                   String                 @id @db.VarChar(36)
-  employee_id          String                 @db.VarChar(36)
-  created_at           DateTime               @default(now())
-  updated_at           DateTime               @updatedAt()
-  deleted_at           DateTime?
+  employee_id          String                 @map("employeeId") @db.VarChar(36)
+  status               SubscriptionStatus     @default(PENDING)
+  created_at           DateTime               @default(now()) @map("createdAt")
+  updated_at           DateTime               @updatedAt() @map("updatedAt")
+  deleted_at           DateTime?              @map("deletedAt")
   Employee             Employees              @relation(fields: [employee_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   SubscriptionPayments SubscriptionPayments[]
 }
 
 model SubscriptionPayments {
   id              String        @id @db.VarChar(36)
-  subscription_id String        @db.VarChar(36)
+  subscription_id String        @map("subscriptionId") @db.VarChar(36)
   amount          Float
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt()
-  deleted_at      DateTime?
+  created_at      DateTime      @default(now()) @map("createdAt")
+  updated_at      DateTime      @updatedAt() @map("updatedAt")
+  deleted_at      DateTime?     @map("deletedAt")
   Subscription    Subscriptions @relation(fields: [subscription_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model PostPayments {
   id         String    @id @db.VarChar(36)
-  post_id    String    @db.VarChar(36)
+  post_id    String    @map("postId") @db.VarChar(36)
   amount     Float
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt()
-  deleted_at DateTime?
+  created_at DateTime  @default(now()) @map("createdAt")
+  updated_at DateTime  @updatedAt() @map("updatedAt")
+  deleted_at DateTime? @map("deletedAt")
   Post       Posts     @relation(fields: [post_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
