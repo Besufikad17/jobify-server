@@ -46,7 +46,7 @@ class ProfileController {
 	}
 
 	public getProfile = async (req: Request, res: Response) => {
-		const employeeId = req.params.employeeId;
+		const employeeId = req.params.id;
 
 		if (!employeeId) return res.status(StatusCode.BAD_REQUEST).send({ message: "Please enter all fields!!" });
 
