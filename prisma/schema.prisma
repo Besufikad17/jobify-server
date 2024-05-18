@@ -96,6 +96,7 @@ model Organizations {
   email             String           @unique
   phone_number      String           @unique @map("phoneNumber")
   linkedin          String
+  website           String
   telegram_username String           @map("telegramUsername")
   telegram_id       String           @map("telegramId")
   created_at        DateTime         @default(now()) @map("createdAt")

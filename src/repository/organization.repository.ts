@@ -19,6 +19,7 @@ class OrganizationRepository {
 				email: organization.email,
 				phone_number: organization.phoneNumber,
 				linkedin: organization.linkedin,
+				website: organization.website,
 				telegram_username: organization.telegramUsername,
 				telegram_id: organization.telegramId
 			}

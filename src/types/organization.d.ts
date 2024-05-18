@@ -8,6 +8,7 @@ export type Organization = {
 	email: string;
 	phoneNumber: string;
 	linkedin: string;
+	website: string;
 	telegramUsername: string;
 	telegramId: string;
 	createdAt?: Date;
