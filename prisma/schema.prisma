@@ -123,6 +123,8 @@ model Posts {
   Organization    Organizations  @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   PostPayments    PostPayments[]
   Applications    Applications[]
+
+  @@fulltext([title, description])
 }
 
 model Applications {

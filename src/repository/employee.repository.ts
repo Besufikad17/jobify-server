@@ -49,7 +49,7 @@ class EmployeeRepository {
 		})
 	}
 
-	public getEmployeeById = async (id: number) => {
+	public getEmployeeById = async (id: string) => {
 
 	}
 
@@ -57,16 +57,11 @@ class EmployeeRepository {
 		return await this.prisma.employees.findFirst({
 			where: {
 				telegram_id: telegramId
+			},
+			include: {
+				Profiles: true
 			}
 		});
-	}
-
-	public updateEmployee = async (id: number) => {
-
-	}
-
-	public deleteEmployee = async (id: number) => {
-
 	}
 }
 

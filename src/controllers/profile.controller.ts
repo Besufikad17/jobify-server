@@ -46,12 +46,12 @@ class ProfileController {
 	}
 
 	public getProfile = async (req: Request, res: Response) => {
-		const employeeId = req.params.id;
+		const id = req.params.id as string;
 
-		if (!employeeId) return res.status(StatusCode.BAD_REQUEST).send({ message: "Please enter all fields!!" });
+		if (!id) return res.status(StatusCode.BAD_REQUEST).send({ message: "Please enter all fields!!" });
 
 		try {
-			const profile = await this.profileRepository.getProfile(employeeId);
+			const profile = await this.profileRepository.getProfile(id);
 			return res.status(StatusCode.OK).send(profile);
 		} catch (error) {
 			console.log(error);
@@ -63,9 +63,10 @@ class ProfileController {
 	}
 
 	public updateProfile = async (req: Request, res: Response) => {
+		const id = req.params.id as string;
 		const { telegramId, highestEducationLevel, portfolio, cv, github, linkedin } = req.body;
 
-		if (!telegramId || !highestEducationLevel) {
+		if (!id || !telegramId || !highestEducationLevel) {
 			return res.status(StatusCode.BAD_REQUEST).send({
 				message: "Please enter all fields!!"
 			});
@@ -82,7 +83,7 @@ class ProfileController {
 				cv,
 				github,
 				linkedin
-			}, employee.id);
+			}, id);
 
 			return res.status(StatusCode.OK).send(newProfile);
 		} catch (error) {

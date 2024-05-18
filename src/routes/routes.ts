@@ -14,11 +14,12 @@ const profileController = new ProfileController();
 
 // employee routes
 route.post("/employee/register", employeeController.register);
+route.get("/employee/:id", employeeController.getEmployee);
 
 // employee profile route
 route.post("/profile/create", profileController.createProfile);
 route.get("/profile/:id", profileController.getProfile);
-route.put("/profile/update", profileController.updateProfile);
+route.put("/profile/update/:id", profileController.updateProfile);
 
 // organization routes
 route.post("/org/register", orgController.register);

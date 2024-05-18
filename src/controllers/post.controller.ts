@@ -31,7 +31,7 @@ class PostController {
 				salary,
 				quantity,
 				description,
-				deadline,
+				deadline: new Date(deadline),
 				location,
 				requirements
 			});
@@ -109,7 +109,7 @@ class PostController {
 				salary,
 				quantity,
 				description,
-				deadline,
+				deadline: new Date(deadline),
 				location,
 				requirements
 			});

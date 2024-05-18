@@ -41,6 +41,23 @@ class EmployeeController {
 			});
 		}
 	}
+
+	public getEmployee = async (req: Request, res: Response) => {
+		const id = req.params.id as string;
+
+		if (!id) return res.status(StatusCode.BAD_REQUEST).send({ message: "Please enter all fields!!" });
+
+		try {
+			const employee = await this.employeeRepository.getEmployeeByTelegramId(id);
+			return res.status(StatusCode.OK).send(employee);
+		} catch (error) {
+			console.log(error);
+			return res.status(StatusCode.INTERNAL_SERVER_ERROR).send({
+				message: getErrorMessage(error),
+				error
+			});
+		}
+	}
 }
 
 export { EmployeeController }

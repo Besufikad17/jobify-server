@@ -24,22 +24,22 @@ class PostRepository {
 		});
 	}
 
-	public getAllPosts = async (skip: number = 0, take: number = 10, text?: string, orderBy: any = 'asc') => {
+	public getAllPosts = async (skip?: number, take?: number, text?: string, orderBy: any = 'asc') => {
 		return await this.prisma.posts.findMany({
 			where: {
 				OR: [
 					{
 						title: {
-							contains: text || undefined
+							search: text || undefined
 						},
 						description: {
-							contains: text || undefined
+							search: text || undefined
 						}
 					}
 				]
 			},
-			skip: skip,
-			take: take,
+			skip: skip || undefined,
+			take: take || undefined,
 			orderBy: {
 				updated_at: orderBy || undefined
 			}
@@ -50,7 +50,7 @@ class PostRepository {
 		return await this.prisma.posts.findFirst({
 			where: {
 				id: postId
-			}
+			},
 		});
 	}
 
