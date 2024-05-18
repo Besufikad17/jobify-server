@@ -13,7 +13,7 @@ class EmployeeController {
 		this.profileRepository = new ProfileRepository()
 	}
 
-	public start = async (req: Request, res: Response) => {
+	public register = async (req: Request, res: Response) => {
 		const { firstName, lastName, email, phoneNumber, dateOfBirth, telegramUsername, telegramId } = req.body;
 
 		if (!firstName || !lastName || !email || !phoneNumber || !dateOfBirth || !telegramUsername || !telegramId) {

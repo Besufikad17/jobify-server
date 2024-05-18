@@ -97,7 +97,7 @@ model Organizations {
   phone_number      String           @unique @map("phoneNumber")
   linkedin          String
   telegram_username String           @map("telegramUsername")
-  telegram_id       BigInt           @map("telegramId")
+  telegram_id       String           @map("telegramId")
   created_at        DateTime         @default(now()) @map("createdAt")
   updated_at        DateTime         @updatedAt() @map("updatedAt")
   deleted_at        DateTime?        @map("deletedAt")
