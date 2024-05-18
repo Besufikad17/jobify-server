@@ -53,6 +53,14 @@ class EmployeeRepository {
 
 	}
 
+	public getEmployeeByTelegramId = async (telegramId: string) => {
+		return await this.prisma.employees.findFirst({
+			where: {
+				telegram_id: telegramId
+			}
+		});
+	}
+
 	public updateEmployee = async (id: number) => {
 
 	}
