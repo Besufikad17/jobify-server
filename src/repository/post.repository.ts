@@ -27,16 +27,12 @@ class PostRepository {
 	public getAllPosts = async (skip?: number, take?: number, text?: string, orderBy: any = 'asc') => {
 		return await this.prisma.posts.findMany({
 			where: {
-				OR: [
-					{
-						title: {
-							search: text || undefined
-						},
-						description: {
-							search: text || undefined
-						}
-					}
-				]
+				title: {
+					search: text || undefined
+				},
+				description: {
+					search: text || undefined
+				}
 			},
 			skip: skip || undefined,
 			take: take || undefined,
